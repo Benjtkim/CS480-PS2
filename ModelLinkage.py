@@ -51,33 +51,70 @@ class ModelLinkage(Component):
         self.contextParent = parent
 
         linkageLength = 0.5
-        link1 = Cube(Point(0, 0, 0), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE1)
+
+        body = Sphere(Point(0,0,0), shaderProg, [0.7, 0.7, 1], Ct.GREEN)
+        face = Sphere(Point(0, +1e-4, 1.2), shaderProg, [0.6, 0.45, 0.5], Ct.DARKGREEN)
+        eye1 = Sphere(Point(-0.25, 1e-4, 0.45), shaderProg, [0.1, 0.1, 0.1], Ct.BLACK)
+        eye2 = Sphere(Point(0.25, 1e-4, 0.45), shaderProg, [0.1, 0.1, 0.1], Ct.BLACK)
+        pupil1 = Sphere(Point(0.04, 1e-4, 0.08), shaderProg, [0.03, 0.03, 0.03], Ct.WHITE)
+        pupil2 = Sphere(Point(0.04, 1e-4, 0.08), shaderProg, [0.03, 0.03, 0.03], Ct.WHITE)
+        tooth1 = Cone(Point(-0.25, -0.2, 0.5), shaderProg, [0.03, 0.1, 0.2], Ct.RED)
+        tooth2 = Cone(Point(0.25, -0.2, 0.5), shaderProg, [0.03, 0.1, 0.2], Ct.RED)
+        tailPart1 = Sphere(Point(0, 0.15, -0.93), shaderProg, [0.2, 0.2, 0.2], Ct.CYAN)
+        tailPart2 = Cone(Point(0, 0, 0.8), shaderProg, [0.15, 0.15, 0.8], Ct.BLUE)
+
+        # uAxis = y, vAxis = x, wAxis = z
+        tooth1.rotate(30, self.uAxis)
+        tooth2.rotate(30, self.uAxis)
+        tailPart2.rotate(220, self.uAxis)
+        # link1 = Cube(Point(0, 0, 0), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE1)
         # putting link2 exactly at (0, 0, 0.95 * linkageLength) would cause z-fighting
         # across parallel top faces, so we nudge it up by a small (imperceptible) amount
-        link2 = Cube(Point(0, +1e-4, 0.95 * linkageLength), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE2)
-        link3 = Cube(Point(0, -1e-4, 0.95 * linkageLength), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE3)
-        link4 = Cube(Point(0, +1e-4, 0.95 * linkageLength), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE4)
+        # link2 = Cube(Point(0, +1e-4, 0.95 * linkageLength), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE2)
+        # link3 = Cube(Point(0, -1e-4, 0.95 * linkageLength), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE3)
+        # link4 = Cube(Point(0, +1e-4, 0.95 * linkageLength), shaderProg, [0.2, 0.2, linkageLength], Ct.DARKORANGE4)
 
-        link2.setRotateExtent(link2.uAxis, -40, 40)
-        link2.setRotateExtent(link2.vAxis, -40, 40)
-        link3.setRotateExtent(link3.uAxis, -40, 40)
-        link3.setRotateExtent(link3.vAxis, -40, 40)
-        link4.setDefaultAngle(90, link4.vAxis)
-        link4.setRotateExtent(link4.vAxis, -20, 60)
-        # the preferred way to scale objects is actually with the "size" parameter at creation.
-        # the following is just a way to ensure one canonical ordering for TODO 1
-        link4.setDefaultScale((1,1,1.5)) 
+        
+        # link2.setRotateExtent(link2.uAxis, -40, 40)
+        # link2.setRotateExtent(link2.vAxis, -40, 40)
+        # link3.setRotateExtent(link3.uAxis, -40, 40)
+        # link3.setRotateExtent(link3.vAxis, -40, 40)
+        # link4.setDefaultAngle(90, link4.vAxis)
+        # link4.setRotateExtent(link4.vAxis, -20, 60)
+        # # the preferred way to scale objects is actually with the "size" parameter at creation.
+        # # the following is just a way to ensure one canonical ordering for TODO 1
+        # link4.setDefaultScale((1,1,1.5)) 
 
-        self.addChild(link1)
-        link1.addChild(link2)
-        link2.addChild(link3)
-        link3.addChild(link4)
+        # self.addChild(link1)
+        self.addChild(body)
+        body.addChild(face)
+        face.addChild(eye1)
+        face.addChild(eye2)
+        eye1.addChild(pupil1)
+        eye2.addChild(pupil2)
+        face.addChild(tooth1)
+        face.addChild(tooth2)
+        body.addChild(tailPart1)
+        tailPart1.addChild(tailPart2)
+        # link1.addChild(link2)
+        # link2.addChild(link3)
+        # link3.addChild(link4)
 
         self.components = {
-            "link1": link1,
-            "link2": link2,
-            "link3": link3,
-            "link4": link4
+            "body": body,
+            "face": face,
+            "eye1": eye1,
+            "eye2": eye2,
+            "pupil1": pupil1,
+            "pupil2": pupil2,
+            "tooth1": tooth1,
+            "tooth2": tooth2,
+            "tailPart1": tailPart1,
+            "tailPart2": tailPart2
+            # "link1": link1,
+            # "link2": link2,
+            # "link3": link3,
+            # "link4": link4
         }
 
         ##### TODO 4: Define creature's joint behavior

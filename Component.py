@@ -230,7 +230,10 @@ class Component:
         # e.g. self.transformationMat = C @ B @ A
 
         # Change only this line!
-        myTransformation = np.identity(4)
+
+        # The pre-rotation matrix is already being applied first in the next line. Therefore, we need 
+        # scaling, R_out, and T_out. 
+        myTransformation = translationMat @ rotationMatW @ rotationMatV @ rotationMatU @ scalingMat
 
         self.transformationMat = parentTransformationMat @ self.postRotationMat @ myTransformation @ self.preRotationMat
 
